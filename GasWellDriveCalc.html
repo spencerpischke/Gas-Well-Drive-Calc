@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Calculator</title>
+</head>
+<body>
+    <h1>Number Calculator</h1>
+    <p style="color: red;">All pressures must be the same units!</p>
+    
+    <label for="number1">CSG: </label>
+    <input type="number" id="number1" placeholder="CSG">
+
+    <label for="number2">TBG (or static): </label>
+    <input type="number" id="number2" placeholder="TBG (or static)">
+
+    <label for="number3">Sales: </label>
+    <input type="number" id="number3" placeholder="Sales">
+
+    <button onclick="calculateResult()">Calculate</button>
+    <p id="result"></p>
+    
+    <script>
+        function calculateResult() {
+            const number1 = parseFloat(document.getElementById("number1").value);
+            const number2 = parseFloat(document.getElementById("number2").value);
+            const number3 = parseFloat(document.getElementById("number3").value);
+
+            if (isNaN(number1) || isNaN(number2) || isNaN(number3)) {
+                document.getElementById("result").textContent = "Please enter valid numbers.";
+            } else if (number1 === number3) {
+                document.getElementById("result").textContent = "Cannot divide by zero (CSG - Sales = 0).";
+            } else {
+                const result = (number1 - number2) / (number1 - number3);
+                document.getElementById("result").textContent = `Result: ${result}`;
+            }
+        }
+    </script>
+</body>
+</html>
