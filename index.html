@@ -1,39 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GasWellDriveCalculator</title></title>
+    <title>GasWellDriveCalc</title>
+    <style>
+        .input-group {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Gas Well Drive Calculator</h1>
     <p style="color: red;">All pressures must be the same units!</p>
     
-    <label for="number1">CSG: </label>
-    <input type="number" id="number1" placeholder="CSG">
+    <div class="input-group">
+        <label for="number1">CSG: </label>
+        <input type="number" id="number1" placeholder="Enter CSG">
+    </div>
 
-    <label for="number2">TBG (or static): </label>
-    <input type="number" id="number2" placeholder="TBG (or static)">
+    <div class="input-group">
+        <label for="number2">TBG: </label>
+        <input type="number" id="number2" placeholder="Enter TBG (or static)">
+    </div>
 
-    <label for="number3">Sales: </label>
-    <input type="number" id="number3" placeholder="Sales">
+    <div class="input-group">
+        <label for="number3">PPL: </label>
+        <input type="number" id="number3" placeholder="Enter PPL (Sales)">
+    </div>
 
-    <button onclick="calculateResult()">Calculate</button>
     <p id="result"></p>
+    <p id="note"></p>
     
     <script>
+        const number1Input = document.getElementById("number1");
+        const number2Input = document.getElementById("number2");
+        const number3Input = document.getElementById("number3");
+        const resultOutput = document.getElementById("result");
+        const noteOutput = document.getElementById("note");
+        
         function calculateResult() {
-            const number1 = parseFloat(document.getElementById("number1").value);
-            const number2 = parseFloat(document.getElementById("number2").value);
-            const number3 = parseFloat(document.getElementById("number3").value);
+            const number1 = parseFloat(number1Input.value);
+            const number2 = parseFloat(number2Input.value);
+            const number3 = parseFloat(number3Input.value);
 
             if (isNaN(number1) || isNaN(number2) || isNaN(number3)) {
-                document.getElementById("result").textContent = "Please enter valid numbers.";
+                resultOutput.textContent = "Please enter valid numbers.";
+                noteOutput.textContent = "";
             } else if (number1 === number3) {
-                document.getElementById("result").textContent = "Cannot divide by zero (CSG - Sales = 0).";
+                resultOutput.textContent = "Cannot divide by zero (CSG - Sales = 0).";
+                noteOutput.textContent = "";
             } else {
                 const result = (number1 - number2) / (number1 - number3);
-                document.getElementById("result").textContent = `Result: ${result}`;
+                resultOutput.textContent = `Result: ${result}`;
+                
+                if (result < 0.5) {
+                    noteOutput.textContent = "Drive should be sufficient to lift plunger";
+                } else {
+                    noteOutput.textContent = "Insufficient drive to surface";
+                }
             }
         }
+
+        // Attach event listeners to input fields to calculate result on input change.
+        number1Input.addEventListener("input", calculateResult);
+        number2Input.addEventListener("input", calculateResult);
+        number3Input.addEventListener("input", calculateResult);
     </script>
 </body>
 </html>
